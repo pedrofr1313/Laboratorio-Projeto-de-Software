@@ -1,0 +1,9 @@
+@startuml
+:secretaria:--> (Use)
+"Gerar curriculo" as (Use)
+"Aluno" as User
+"Fazer matricula" as (c1)
+"Matricular em optativa" as (c2)
+User --> c1
+(c2) .> (c1) :extends
+@enduml

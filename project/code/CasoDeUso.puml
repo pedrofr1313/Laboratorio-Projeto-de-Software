@@ -1,9 +1,12 @@
 @startuml
-:secretaria:--> (Use)
-"Gerar curriculo" as (Use)
-"Aluno" as User
-"Fazer matricula" as (c1)
-"Matricular em optativa" as (c2)
-User --> c1
-(c2) .> (c1) :extends
+"Secretaria" as S
+"Aluno" as A
+"Professor" as P
+S --> (Gerar curriculo)
+S --> (Armazenar informacoes)
+S --> (Gerenciar disciplinas)
+A --> (Realizar Matricula)
+(Realizar Matricula)<. (Matricular optativa) : <<extends>>
+(Realizar Matricula)<. (Cancelar Matricula): ‹<extends>>
+P -->(visualizar alunos matriculados)
 @enduml

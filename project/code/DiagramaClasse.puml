@@ -6,8 +6,6 @@ class  Curso{
      BuscarDisciplinas():Disciplina
 }
 class  Aluno{
-    NomeAluno : String
-    Id: int
     
 
 }
@@ -16,37 +14,56 @@ class  Turma{
     disciplina: Disciplina
     Alunos: List<Aluno>
     AddAluno():void
+    RemoverAluno():void
     Professor:Professor
 
 }
 class  Secretaria
 {
-    Nome: String
-    Id: int
+    
+    gerarCurriculo(): void
+    ArmazenarInformacoes(): void
+    
 }
 class  Professor
 {
-    Nome:String
-    Id: int
+
     Turmas: List<Turma>
+    visualizarAlunos(): void
 }
 class  Disciplina{
     Curso: Curso
     Nome: String
+    NumeroAlunos: int
+    MinimoAlunos : int = 3
+    MaximoAlunos : int = 60
+    Status: boolean = true
     Optativa: boolean
     Turmas: List<Turma>
+    verificarDisciplina():void
     exibirTurmas():void
 }
 class Matricula{
     Aluno : Aluno
     Curso : Curso
     Turmas: List<Turma>
-    matricular():void
+    matricular(Disciplina discilplina):void
+    cancelarMatricula(Disciplina discilplina): void
+    notificarSistemaCobranca(): void
 }
-Turma "0..*" -- "1"Disciplina
 
+abstract class Usuario{
+    Nome: String
+    Id: int
+}
+
+Turma "0..*" -- "1"Disciplina
+Professor "1"-- "0..*" Turma
 Matricula "1" -- "1" Aluno
 Turma "1" *-- "0..*"Aluno
 Curso "1"-- "0..*"Disciplina
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Usuario <|-- Secretaria
 
 @enduml

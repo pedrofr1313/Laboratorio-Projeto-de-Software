@@ -1,0 +1,52 @@
+@startuml
+class  Curso{
+     Nome : String
+     NumCreditos : int
+     Disciplinas : List<Disciplina>
+     BuscarDisciplinas():Disciplina
+}
+class  Aluno{
+    NomeAluno : String
+    Id: int
+    
+
+}
+class  Turma{
+    Id: int
+    disciplina: Disciplina
+    Alunos: List<Aluno>
+    AddAluno():void
+    Professor:Professor
+
+}
+class  Secretaria
+{
+    Nome: String
+    Id: int
+}
+class  Professor
+{
+    Nome:String
+    Id: int
+    Turmas: List<Turma>
+}
+class  Disciplina{
+    Curso: Curso
+    Nome: String
+    Optativa: boolean
+    Turmas: List<Turma>
+    exibirTurmas():void
+}
+class Matricula{
+    Aluno : Aluno
+    Curso : Curso
+    Turmas: List<Turma>
+    matricular():void
+}
+Turma "0..*" -- "1"Disciplina
+
+Matricula "1" -- "1" Aluno
+Turma "1" *-- "0..*"Aluno
+Curso "1"-- "0..*"Disciplina
+
+@enduml

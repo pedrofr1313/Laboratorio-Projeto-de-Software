@@ -2,11 +2,14 @@
 "Secretaria" as S
 "Aluno" as A
 "Professor" as P
-S --> (Gerar curriculo)
+S --> (Gerar currículo)
 S --> (Armazenar informacoes)
 S --> (Gerenciar disciplinas)
-A --> (Realizar Matricula)
-(Realizar Matricula)<. (Matricular optativa) : <<extends>>
-(Realizar Matricula)<. (Cancelar Matricula): ‹<extends>>
+A --> (Buscar disciplinas)
+A --> (Buscar matriculas realizadas)
+(Realizar Matricula) .> (Buscar disciplinas) : <<extends>>
+(Buscar matriculas realizadas)<. (Cancelar Matricula): ‹<extends>>
+(Realizar Matricula) .> (Notificar sistema de cobranças): <<include>>
+(Cancelar Matricula) .>(Notificar sistema de cobranças): <<include>>
 P -->(visualizar alunos matriculados)
 @enduml

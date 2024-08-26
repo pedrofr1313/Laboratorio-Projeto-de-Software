@@ -1,4 +1,8 @@
+package business.Disciplina;
+import java.util.List;
 
+import business.Curso.Curso;
+import business.Turma.Turma;
 public class Disciplina{
     private Curso curso;
     private String Nome;

@@ -2,20 +2,21 @@
 class  Curso{
      Nome : String
      NumCreditos : int
-     Disciplinas : List<Disciplina>
-     BuscarDisciplinas():Disciplina
+    
 }
 class  Aluno{
-    
+ Periodo:int   
 
 }
 class  Turma{
     Id: int
-    disciplina: Disciplina
+    Disciplina:Disciplina
     Alunos: List<Aluno>
     AddAluno():void
     RemoverAluno():void
     Professor:Professor
+    Período: int
+    VisualizarAlunos():void
 
 }
 class  Secretaria
@@ -28,8 +29,8 @@ class  Secretaria
 class  Professor
 {
 
-    Turmas: List<Turma>
-    visualizarAlunos(): void
+    
+
 }
 class  Disciplina{
     Curso: Curso
@@ -39,7 +40,6 @@ class  Disciplina{
     MaximoAlunos : int = 60
     Status: boolean = true
     Optativa: boolean
-    Turmas: List<Turma>
     verificarDisciplina():void
     exibirTurmas():void
 }
@@ -47,9 +47,11 @@ class Matricula{
     Aluno : Aluno
     Curso : Curso
     Turmas: List<Turma>
-    matricular(Disciplina discilplina):void
+    registrarAluno(Aluno alun):void
+    matricular(Aluno aluno, Curso curso):void
     cancelarMatricula(Disciplina discilplina): void
     notificarSistemaCobranca(): void
+    
 }
 
 abstract class Usuario{
@@ -57,7 +59,7 @@ abstract class Usuario{
     Id: int
 }
 
-Turma "0..*" -- "1"Disciplina
+Turma "1" -- "1"Disciplina
 Professor "1"-- "0..*" Turma
 Matricula "1" -- "1" Aluno
 Turma "1" *-- "0..*"Aluno

@@ -1,4 +1,4 @@
-import code.Turma;
+
 public class Disciplina{
     private Curso curso;
     private String Nome;

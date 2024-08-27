@@ -7,8 +7,7 @@ import business.Turma.Turma;
 import business.Usuarios.Aluno;
 
 public class Matricula {
-    private Aluno aluno;
-    private Curso curso;
+   
     private List<Turma> turmas;
     
     public void matricular(Aluno aluno, Curso curso) {

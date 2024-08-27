@@ -2,15 +2,19 @@
 class  Curso{
      Nome : String
      NumCreditos : int
+     Disciplinas: List<Disciplina>
     
 }
 class  Aluno{
- Periodo:int   
+ Curso : Curso
+ Periodo:int 
+ Matricula:Matricula
+ buscarDisciplinas()  
 
 }
 class  Turma{
     Id: int
-    Disciplina:Disciplina
+   
     Alunos: List<Aluno>
     AddAluno():void
     RemoverAluno():void
@@ -28,14 +32,15 @@ class  Secretaria
 }
 class  Professor
 {
-
+    Turma: List<Turma>
     
 
 }
 class  Disciplina{
-    Curso: Curso
     Nome: String
+    Turmas: List<Turma>
     NumeroAlunos: int
+    CargaHoraria : int
     MinimoAlunos : int = 3
     MaximoAlunos : int = 60
     Status: boolean = true
@@ -44,8 +49,7 @@ class  Disciplina{
     exibirTurmas():void
 }
 class Matricula{
-    Aluno : Aluno
-    Curso : Curso
+    
     Turmas: List<Turma>
     registrarAluno(Aluno alun):void
     matricular(Aluno aluno, Curso curso):void
@@ -67,5 +71,7 @@ Curso "1"-- "0..*"Disciplina
 Usuario <|-- Aluno
 Usuario <|-- Professor
 Usuario <|-- Secretaria
+Turma "0..*" -- "0..*"Matricula
+Aluno "0..*"--"1"Curso
 
 @enduml

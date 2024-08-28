@@ -14,8 +14,12 @@ class  Aluno{
 }
 class  Turma{
     Id: int
-   
+    MinimoAlunos : int = 3
+    MaximoAlunos : int = 60
+    Status: boolean = true
     Alunos: List<Aluno>
+    Optativa: boolean
+    NumeroAlunos: int
     AddAluno():void
     RemoverAluno():void
     Professor:Professor
@@ -32,19 +36,18 @@ class  Secretaria
 }
 class  Professor
 {
-    Turma: List<Turma>
+    Turmas: List<Turma>
     
 
 }
 class  Disciplina{
     Nome: String
+    id: int
     Turmas: List<Turma>
-    NumeroAlunos: int
+    Periodo: int
+
     CargaHoraria : int
-    MinimoAlunos : int = 3
-    MaximoAlunos : int = 60
-    Status: boolean = true
-    Optativa: boolean
+    
     verificarDisciplina():void
     exibirTurmas():void
 }
@@ -52,9 +55,10 @@ class Matricula{
     
     Turmas: List<Turma>
     registrarAluno(Aluno alun):void
-    matricular(Aluno aluno, Curso curso):void
+    addTurma(Turma turma):void
     cancelarMatricula(Disciplina discilplina): void
     notificarSistemaCobranca(): void
+    PodeSeMatricular(Turma turma):boolean
     
 }
 

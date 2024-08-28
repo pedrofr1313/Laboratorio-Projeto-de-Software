@@ -6,6 +6,8 @@ import business.Usuarios.UsuarioDAO;
 import business.Usuarios.Secretaria;
 import business.Usuarios.Serializacao;
 import business.Usuarios.Professor;
+import business.Matricula.Matricula;
+import business.Turma.Turma;
 import business.Disciplina.Disciplina;
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
     }
     public static void main(String[] args) throws IOException {
         CargaDeDadosUsuario();
-         Usuario usuarioUtilizado= null;
+        Usuario usuarioUtilizado= null;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digite o id do usuario no qual deseja logar");
        int id = scanner.nextInt();
@@ -88,10 +90,10 @@ public static void setUsuarios(List<Usuario> usuarios) {
         op = scanner.nextInt();
         switch (op) {
             case 1:
-               BuscarDisciplinas(); 
+               BuscarDisciplinas(scanner); 
                 break;
             case 2:
-                ExibirMatricula();
+                ExibirMatricula(scanner);
             default:
                 break;
         }
@@ -147,15 +149,63 @@ public static void setUsuarios(List<Usuario> usuarios) {
             }
     
      }
-     public static void BuscarDisciplinas()
+     public static void BuscarDisciplinas(Scanner scanner)
      {
-        List<Disciplina> disciplinas = AlunoUtilizado.getCurso().getDisciplinas();
-        System.out.println("Disciplinas disponíveis no curso "+ AlunoUtilizado.getCurso()+":");
+        List<Disciplina> disciplinas = AlunoUtilizado.getCurso().getDisciplinasPorPeriodo(AlunoUtilizado.getPeriodo());
+        System.out.println("Disciplinas do"+ AlunoUtilizado.getPeriodo() + "disponíveis no curso "+ AlunoUtilizado.getCurso()+":");
         for(Disciplina d: disciplinas)
         {
-            System.out.println(d.getNome());
+            System.out.println("Disciplina "+ d.getId()+":" + d.getNome());
         }
+        
+        int op;
+        do{
+        System.out.println("O que deseja fazer?\n 1-Matricular-se em uma turma \n 2-Voltar ao menu do Aluno");   
+         op = scanner.nextInt();
+         scanner.nextLine();
+         switch (op) {
+            case 1:
+                EscolherDisciplina(disciplinas,scanner);
+                break;
+            case 2:
+                MenuAluno(scanner);
+            default:
+                break;
+         }
+         if(op>2||op<1)
+         {
+            System.out.println("Opção inválida, por favor tente novamente\n");
+         }
+        }while(op>2||op<1);
+
      }
+     
+     
+     
+     
+     public static void EscolherDisciplina(List<Disciplina> disciplinas,Scanner scanner)
+     {
+      Disciplina disciplina = null;
+      do{
+     System.out.println("Digite o número do id da disciplina pelo qual deseja se matricular\n");
+       
+      int id = scanner.nextInt();
+      
+      
+      for(Disciplina d:disciplinas)
+      {
+        if(d.getId()==id)
+        {
+            disciplina = d;
+        }
+      }
+      if(disciplina==null)
+      {
+        System.out.println("O id escolhido nao se refere a nenhuma disciplina.");
+      }
+    }while(disciplina==null);
+    RealizarMatricula( disciplina, scanner);
+       }
    
    
    
@@ -165,57 +215,84 @@ public static void setUsuarios(List<Usuario> usuarios) {
    
    
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-        //     UsuarioDAO DAOusuario = new UsuarioDAO("Usuario.dat");
-    //  if(DAOusuario.getAll() != null)
-    //  {
-    //   setUsuarios(DAOusuario.getAll());
-    //   for(Usuario usuario : Usuarios)
-    //   {
-    //     System.out.println(usuario.getEmail());
-    //   }
-    //  }
+     public static void RealizarMatricula(Disciplina disciplina,Scanner scanner)
+   {
+    System.out.println("Turmas disponíveis na disciplina \n"+ disciplina.getNome());
+    for(Turma t:disciplina.getTurmas())
+    {
+      System.out.println("Turma "+ t.getId()+ "do professor " + t.getProfessor());
+    }
+    Turma TurmaEscolhida = null;
+    do{
+      System.out.println("Digite o número do id da turma pela qual deseja se matricular\n");
+        
+       int id = scanner.nextInt();
+       
+       
+       for(Turma t :disciplina.getTurmas())
+       {
+         if(t.getId()==id)
+         {
+             TurmaEscolhida = t;
+         }
+       }
+       if(TurmaEscolhida==null)
+       {
+         System.out.println("O id escolhido nao se refere a nenhuma turma da disciplina.");
+       }
+     }while(TurmaEscolhida==null);
+     
+     if(AlunoUtilizado.getMatricula().PodeSeMatricular(TurmaEscolhida))
+     {
+     AlunoUtilizado.getMatricula().addTurma(TurmaEscolhida);
+     System.out.println("Matricula");
+     }
+     else
+     {
+        System.out.println("Matrícula nao concluida. Possibilidades de erro:\n 1-O aluno ja está matriculado nessa disciplina.\n 2-O limite de turmas optativas foi excedido.\n 3-O limite de materias obrigatorias foi excedido.");
+     }
+     System.out.println("O que deseja fazer?(Digite uma das opções) \n 1-Voltar ao menu do aluno\n 2-Buscar disciplinas.");
+     int op = scanner.nextInt();
+     switch (op) {
+        case 1:
+          MenuAluno(scanner);  
+            break;
+        case 2:
+          BuscarDisciplinas(scanner);
+        default:
+            break;
+     }
 
-    //  if(Usuarios == null)
-    //  {
-    //     for (int i = 1; i <= 8; i++) {
-    //         Usuarios.add(new Aluno("Aluno" + i, i, "aluno" + i + "@exemplo.com", "senha" + i, i % 4 + 1)); // Alunos em diferentes períodos
-    //     }
-
-    //     // Instanciando 6 professores
-    //     for (int i = 1; i <= 6; i++) {
-    //         Usuarios.add(new Professor("Professor" + i, 100 + i, "professor" + i + "@exemplo.com", "senha" + i));
-    //     }
-
-    //     // Instanciando 6 secretarias
-    //     for (int i = 1; i <= 6; i++) {
-    //         Usuarios.add(new Secretaria("Secretaria" + i, 200 + i, "secretaria" + i + "@exemplo.com", "senha" + i));
-    //     }
-    //  }
-    //  DAOusuario.saveToFile(Usuarios);
-    //             System.exit(0);
+   }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 }

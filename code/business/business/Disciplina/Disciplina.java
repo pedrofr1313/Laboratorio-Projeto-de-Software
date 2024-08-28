@@ -6,21 +6,17 @@ import business.Turma.Turma;
 public class Disciplina{
 
     private String Nome;
-   
-    private int NumeroAlunos;
-    private int MinimoAlunos;
-    private int MaximoAlunos;
-    private boolean status=true;
-    private boolean Optativa; 
+    private int id;
+    private int periodo;
     private List<Turma> Turmas;
 
 
-    public Disciplina(String nome, boolean status, boolean optativa, List<Turma> turmas) {
+
+    public Disciplina(String nome, List<Turma> turmas, int periodo, int id) {
         this.Nome = nome; 
-        this.status = status;
-        this.NumeroAlunos=0;
-        this.Optativa = optativa;
         this.Turmas = turmas;
+        this.periodo= periodo;
+        this.id= id;
     }
     public String getNome() {
         return Nome;
@@ -38,5 +34,23 @@ public class Disciplina{
     {
 
     }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getPeriodo() {
+        return periodo;
+    }
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+    public List<Turma> getTurmas() {
+        return Turmas;
+    }
+    public void setTurmas(List<Turma> turmas) {
+        Turmas = turmas;
+    }
 
-}
+    }

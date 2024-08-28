@@ -4,6 +4,7 @@ package business.Curso;
 import java.util.List;
 import business.Disciplina.Disciplina;
 
+
 public class Curso {
 
     private String Nome;
@@ -26,5 +27,12 @@ public class Curso {
     public void setDisciplinas(List<Disciplina> disciplinas) {
         this.Disciplinas = disciplinas;
     }
+    public List<Disciplina> getDisciplinasPorPeriodo(int periodo)
+    {
+       return Disciplinas.stream()
+       .filter(disciplina -> disciplina.getPeriodo() == periodo)
+       .toList();
+    }
+   
 
 }

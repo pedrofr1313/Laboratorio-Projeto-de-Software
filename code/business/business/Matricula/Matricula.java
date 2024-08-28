@@ -10,8 +10,9 @@ public class Matricula {
    
     private List<Turma> turmas;
     
-    public void matricular(Aluno aluno, Curso curso) {
-     
+    public void addTurma(Turma turma)
+    {
+     turmas.add(turma);
     }
 
     public void cancelarMatricula(Disciplina disciplina) {
@@ -19,6 +20,63 @@ public class Matricula {
     }
 
     public void notificarSistemaCobranca() {
+
+    }
+    public Matricula()
+    {
+        
+    }
+    public boolean PodeSeMatricular(Turma t)
+    {
+        int cont1 = 0;
+        int cont2=0;
+        if(t.isOptativa())
+        {
+            for(Turma turma: turmas)
+            {
+               if(turma.isOptativa())
+               {
+                if(turma.getId()==t.getId())
+                {
+                 return false;
+                }
+                cont1++;
+               }
+            }
+
+            if(cont1<2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else 
+        {
+           for(Turma turma: turmas)
+           {
+            if(!turma.isOptativa())
+            {
+                if(turma.getId()==t.getId())
+                {
+                 return false;
+                }
+                cont2++;
+            }
+           }
+
+           if(cont2<4)
+           {
+            return true;
+           }
+           else
+           {
+             return false;
+           }
+        }
+        
 
     }
 }

@@ -36,7 +36,9 @@ class  Secretaria
 }
 class  Professor
 {
-    Turmas: List<Turma>
+    Turmas: List<Disciplina>
+    visualizarDisciplinas() : List<String>
+    visualizarAlunosNaDisciplina(disciplinaId: int) : List<String>
     
 
 }

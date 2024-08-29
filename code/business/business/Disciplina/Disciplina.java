@@ -1,9 +1,11 @@
 package business.Disciplina;
+import java.io.Serializable;
 import java.util.List;
 
 import business.Curso.Curso;
 import business.Turma.Turma;
-public class Disciplina{
+import business.Usuarios.Aluno;
+public class Disciplina implements Serializable{
 
     private String Nome;
     private int id;
@@ -51,6 +53,10 @@ public class Disciplina{
     }
     public void setTurmas(List<Turma> turmas) {
         Turmas = turmas;
+    }
+    public Aluno[] getAlunos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAlunos'");
     }
 
     }

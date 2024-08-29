@@ -1,11 +1,12 @@
 package business.Curso;
 
 
+import java.io.Serializable;
 import java.util.List;
 import business.Disciplina.Disciplina;
 
 
-public class Curso {
+public class Curso implements Serializable {
 
     private String Nome;
     private int NumCreditos;

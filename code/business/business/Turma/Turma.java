@@ -1,4 +1,5 @@
 package business.Turma;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,7 +7,7 @@ import business.Disciplina.Disciplina;
 import business.Usuarios.Aluno;
 import business.Usuarios.Professor;
 
-public class Turma {
+public class Turma implements Serializable{
     private int id;
     
     private List<Aluno> alunos;
@@ -30,6 +31,7 @@ public class Turma {
         
     }
     
+
     public void removerAluno(Aluno aluno){
         alunos.remove(aluno);
 
@@ -66,4 +68,9 @@ public class Turma {
         return alunos;
     }
 
+    public int getPeriodo() {
+        return periodo;
+    }
+
+   
 }

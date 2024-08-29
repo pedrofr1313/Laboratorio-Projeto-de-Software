@@ -1,4 +1,5 @@
 package business.Matricula;
+import java.io.Serializable;
 import java.util.List;
 
 import business.Curso.Curso;
@@ -6,7 +7,7 @@ import business.Disciplina.Disciplina;
 import business.Turma.Turma;
 import business.Usuarios.Aluno;
 
-public class Matricula {
+public class Matricula implements Serializable {
    
     private List<Turma> turmas;
     
@@ -22,9 +23,8 @@ public class Matricula {
     public void notificarSistemaCobranca() {
 
     }
-    public Matricula()
-    {
-        
+    public Matricula(List<Turma> turmas) {
+        this.turmas = turmas;
     }
     public boolean PodeSeMatricular(Turma t)
     {

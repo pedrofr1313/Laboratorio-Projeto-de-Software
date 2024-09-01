@@ -1,5 +1,6 @@
 package business.Matricula;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import business.Curso.Curso;
@@ -11,6 +12,10 @@ public class Matricula implements Serializable {
    
     private List<Turma> turmas;
     
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
+
     public void addTurma(Turma turma)
     {
      turmas.add(turma);
@@ -23,8 +28,8 @@ public class Matricula implements Serializable {
     public void notificarSistemaCobranca() {
 
     }
-    public Matricula(List<Turma> turmas) {
-        this.turmas = turmas;
+    public Matricula() {
+        this.turmas = new ArrayList<>();
     }
     public boolean PodeSeMatricular(Turma t)
     {

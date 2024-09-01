@@ -8,6 +8,7 @@ import business.Usuarios.Serializacao;
 import business.Usuarios.Professor;
 import business.Matricula.Matricula;
 import business.Turma.Turma;
+import business.Curso.Curso;
 import business.Disciplina.Disciplina;
 import java.io.File;
 import java.util.ArrayList;
@@ -21,8 +22,14 @@ private static List<Usuario> Usuarios = new ArrayList<>();
 private static Aluno AlunoUtilizado;
 private static Professor ProfessorUtilizado;
 private static Secretaria SecretariaUtilizada;
+private static String nomeArquivo;
+
    
 
+
+public static void setNomeArquivo(String nomeArquivo) {
+    Main.nomeArquivo = nomeArquivo;
+}
 public static Aluno getAlunoUtilizado() {
     return AlunoUtilizado;
 }
@@ -74,6 +81,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
        if(usuarioUtilizado instanceof Secretaria)
        {
         setSecretariaUtilizada((Secretaria) usuarioUtilizado);
+        MenuSecretaria(scanner);
        }
  
 
@@ -92,18 +100,21 @@ public static void setUsuarios(List<Usuario> usuarios) {
     do{
         System.out.println("1 - Buscar disciplinas");
         System.out.println("2-Exibir matrícula realizada");
+        System.out.println("Fechar programa");
         op = scanner.nextInt();
         switch (op) {
             case 1:
                BuscarDisciplinas(scanner); 
                 break;
             case 2:
-               // ExibirMatricula(scanner);
+               ExibirMatricula(scanner);
+            case 3:
+               fecharProgramaAluno();
             default:
                 break;
         }
 
-    }while(op>2 || op<0);
+    }while(op>3 || op<0);
    }
    
 
@@ -111,108 +122,192 @@ public static void setUsuarios(List<Usuario> usuarios) {
 
 
    public static void CargaDeDadosUsuario() {
-    String nomeArquivo = "Usuarios.dat";
-    File arquivo = new File(nomeArquivo);
+        setNomeArquivo("Usuarios.dat");
+        File arquivo = new File(nomeArquivo);
 
-    if (arquivo.exists()) {
-        try {
-            List<Usuario> usuariosCarregados = Serializacao.carregarUsuarios(nomeArquivo);
-            if (usuariosCarregados != null) {
-                setUsuarios(usuariosCarregados);
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Erro ao carregar os usuários: " + e.getMessage());
-        }
-    } else {
-        // Criar o arquivo e adicionar dados iniciais se não existir
-        try {
-            if (arquivo.createNewFile()) {
-                System.out.println("Arquivo criado: " + nomeArquivo);
-            } else {
-                System.out.println("Arquivo já existe.");
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao criar o arquivo: " + e.getMessage());
-        }
-
-        // Instanciar usuários
-        List<Usuario> usuarios = new ArrayList<>();
-        
-        // Instanciando 8 alunos
-        List<Aluno> alunos = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            alunos.add(new Aluno("Aluno" + i, i % 4 + 1, i, null, null)); // Alunos em diferentes períodos
-        }
-
-        // Instanciando 6 professores
-        List<Professor> professores = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            professores.add(new Professor("Professor" + i, 100 + i));
-        }
-
-        // Instanciando 6 secretarias
-        List<Secretaria> secretarias = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            secretarias.add(new Secretaria("Secretaria" + i, 200 + i));
-        }
-
-        // Criar disciplinas e turmas
-        List<Turma> turmas = new ArrayList<>();
-        List<Disciplina> disciplinas = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            Professor professor = professores.get(i % professores.size());
-            Turma turma = new Turma(i, professor, i % 4 + 1);
-            turmas.add(turma);
-
-            // Associando alunos às turmas
-            for (Aluno aluno : alunos) {
-                if (aluno.getPeriodo() == turma.getPeriodo()) {
-                    turma.adicionarAluno(aluno);
+        if (arquivo.exists()) {
+            try {
+                List<Usuario> usuariosCarregados = Serializacao.carregarUsuarios(nomeArquivo);
+                if (usuariosCarregados != null) {
+                    setUsuarios(usuariosCarregados);
                 }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Erro ao carregar os usuários: " + e.getMessage());
+            }
+        } else {
+            try {
+                if (arquivo.createNewFile()) {
+                    System.out.println("Arquivo criado: " + nomeArquivo);
+                } else {
+                    System.out.println("Arquivo já existe.");
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao criar o arquivo: " + e.getMessage());
+            }
+
+            List<Usuario> usuarios = new ArrayList<>();
+
+            List<Curso> cursos = new ArrayList<>();
+            String[] nomesCursos = {"Engenharia de Software", "Ciência da Computação"};
+            int[] creditosCursos = {180, 160};
+
+            for (int i = 0; i < nomesCursos.length; i++) {
+                cursos.add(new Curso(nomesCursos[i], creditosCursos[i],null, i));
+            }
+
+            List<Aluno> alunos = new ArrayList<>();
+            for (int i = 1; i <= 8; i++) {
+                Curso curso = cursos.get(i % cursos.size());
+                alunos.add(new Aluno("Aluno" + i, i, 1, curso, new Matricula()));
+            }
+
+            List<Professor> professores = new ArrayList<>();
+            for (int i = 1; i <= 6; i++) {
+                professores.add(new Professor("Professor" + i, 100 + i));
+            }
+
+            List<Secretaria> secretarias = new ArrayList<>();
+            for (int i = 1; i <= 6; i++) {
+                secretarias.add(new Secretaria("Secretaria" + i, 200 + i));
+            }
+
+            int contador =1 ;
+            for (Curso curso: cursos) {
+                List<Disciplina> disciplinas = new ArrayList<>();
+                for (int j = 1; j <= 8; j++) {
+                   
+                    List<Turma> turmaList = new ArrayList<>();
+                    Disciplina disciplina = new Disciplina("Disciplina de " + curso.getNome(), turmaList, 1, j * contador);
+                    disciplinas.add(disciplina);
+                    
+                    
+                }
+                curso.setDisciplinas(disciplinas);
+                contador ++;
+            }
+
+            List<Turma> turmas = new ArrayList<>();
+            int cont =1;
+            for(Curso curso:cursos)
+            {
+            for (Disciplina disciplina : curso.getDisciplinas()) {
+               
+                for(Professor professor :professores)
+                {
+                    
+                    Turma turma = new Turma(cont, professor, disciplina.getPeriodo());
+                    Turma turma2= new Turma(cont+1,professor,disciplina.getPeriodo());
+                    if(disciplina.getTurmas().isEmpty())
+                    {
+                        disciplina.addTurma(turma);
+                        disciplina.addTurma(turma2);
+                    }
+                    professor.addDisciplina(disciplina);
+
+                }
+                
+                
+                
+                
+                cont=cont+2;
             }
         }
 
-        // Criando disciplinas e associando turmas a elas
-        for (int i = 1; i <= 3; i++) {
-            List<Turma> turmaList = new ArrayList<>(turmas.subList(i * 2 - 2, i * 2)); // Cria uma nova lista a partir da sublist
-            Disciplina disciplina = new Disciplina("Disciplina" + i, turmaList, i, i);
-            disciplinas.add(disciplina);
+            
+
+            usuarios.addAll(alunos);
+            usuarios.addAll(professores);
+            usuarios.addAll(secretarias);
+
+            try {
+                Serializacao.salvarUsuarios(usuarios, nomeArquivo);
+            } catch (IOException e) {
+                System.out.println("Erro ao salvar os usuários: " + e.getMessage());
+            }
+            setUsuarios(usuarios);
         }
 
-        // Associando disciplinas aos professores
-        for (Professor professor : professores) {
-            professor.setDisciplinas(disciplinas);
+        for (Usuario usuario : getUsuarios()) {
+            System.out.println(usuario.getNome());
+            System.out.println("ID: " + usuario.getId());
         }
-
-        // Adicionando todos os usuários
-        usuarios.addAll(alunos);
-        usuarios.addAll(professores);
-        usuarios.addAll(secretarias);
-
-        // Salvar os dados no arquivo
-        try {
-            Serializacao.salvarUsuarios(usuarios, nomeArquivo);
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os usuários: " + e.getMessage());
-        }
-        setUsuarios(usuarios);
     }
 
-    // Exibir usuários
-    for (Usuario usuario : Usuarios) {
-        System.out.println(usuario.getNome());
-        System.out.println("ID: " + usuario.getId());
+    public static List<Usuario> getUsuarios() {
+        return Usuarios;
+    }
+
+
+
+
+
+
+public static void ExibirMatricula(Scanner scanner)
+{
+    Matricula matricula =AlunoUtilizado.getMatricula();
+    System.out.println("Turmas matriculadas:");
+    for(Turma t: matricula.getTurmas())
+    {
+        System.out.println("Turma "+t.getId() +" do professor "+ t.getProfessor().getNome());
+    }
+    int op;
+    do{
+    System.out.println("Deseja cancelar matrícula em alguma das turmas?\n1-Sim\n2-Não");
+    op =scanner.nextInt();
+    if(op!=1 && op!=2)
+    {
+        System.out.println("Opção inválida, tente novamente.");
+    }
+    }while(op!=1 && op!=2);
+    int id;
+    if(op==1)
+    {
+        int validador =0;
+        do{
+        System.out.println("Digite o id da turma pela qual deseja cancelar sua matricula.");
+         id = scanner.nextInt();
+        for(Turma t: matricula.getTurmas())
+        {
+            if(id==t.getId())
+            {
+                validador++;
+            }
+        }
+        if(validador==0)
+        {
+            System.out.println("Turma não encontrada.");
+        }
+        }while(validador==0);
+       
+       Turma t =null;
+       
+        for(Turma turma:matricula.getTurmas())
+        {
+           if(turma.getId()== id)
+           {
+            t = turma;
+            
+           }
+        }
+        if(t==null)
+        {
+            System.out.println("id inválido!");
+        }
+        matricula.getTurmas().remove(t);
+        MenuAluno(scanner);
+       
+    }
+    else{
+     MenuAluno(scanner);
     }
 }
-
-
 
 
 
      public static void BuscarDisciplinas(Scanner scanner)
      {
         List<Disciplina> disciplinas = AlunoUtilizado.getCurso().getDisciplinasPorPeriodo(AlunoUtilizado.getPeriodo());
-        System.out.println("Disciplinas do"+ AlunoUtilizado.getPeriodo() + "disponíveis no curso "+ AlunoUtilizado.getCurso()+":");
+        System.out.println("Disciplinas do "+ AlunoUtilizado.getPeriodo() + " periodo disponíveis no curso "+ AlunoUtilizado.getCurso().getNome()+":");
         for(Disciplina d: disciplinas)
         {
             System.out.println("Disciplina "+ d.getId()+":" + d.getNome());
@@ -257,6 +352,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
         if(d.getId()==id)
         {
             disciplina = d;
+           
         }
       }
       if(disciplina==null)
@@ -268,7 +364,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
        }
    
    
-   
+  
    
    
    
@@ -280,7 +376,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
     System.out.println("Turmas disponíveis na disciplina \n"+ disciplina.getNome());
     for(Turma t:disciplina.getTurmas())
     {
-      System.out.println("Turma "+ t.getId()+ "do professor " + t.getProfessor());
+      System.out.println("Turma "+ t.getId()+ " do professor " + t.getProfessor().getNome());
     }
     Turma TurmaEscolhida = null;
     do{
@@ -302,10 +398,13 @@ public static void setUsuarios(List<Usuario> usuarios) {
        }
      }while(TurmaEscolhida==null);
      
-     if(AlunoUtilizado.getMatricula().PodeSeMatricular(TurmaEscolhida))
+     if(AlunoUtilizado.getMatricula().PodeSeMatricular(TurmaEscolhida)&& ChecaLimitedepessoas(TurmaEscolhida)==true)
      {
      AlunoUtilizado.getMatricula().addTurma(TurmaEscolhida);
-     System.out.println("Matricula");
+     addAlunoTurmaProfessor(TurmaEscolhida);
+
+     
+     System.out.println("Matricula realizada com sucesso na turma de id " +TurmaEscolhida.getId());
      }
      else
      {
@@ -326,6 +425,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
 
    }
    
+   
    public static void MenuProfessor(Scanner scanner) {
     System.out.println("Bem-vindo, Professor!");
     System.out.println("1 - Ver disciplinas");
@@ -340,11 +440,14 @@ public static void setUsuarios(List<Usuario> usuarios) {
         case 2:
             VerAlunosDisciplina(scanner);
             break;
+
+        case 3: 
+        System.out.println("Saindo do programa.");
         default:
             System.out.println("Opção inválida.");
             MenuProfessor(scanner);
             break;
-    }
+    } while (op != 3);
 
     
 }
@@ -362,6 +465,10 @@ public static void VerDisciplinas(Scanner scanner) {
 }
 
 public static void VerAlunosDisciplina(Scanner scanner) {
+    for(Disciplina disciplina:ProfessorUtilizado.getDisciplina())
+    {
+        System.out.println(disciplina.getNome() + "id: "+ disciplina.getId());
+    }
     System.out.println("Digite o ID da disciplina para visualizar os alunos:");
     int idDisciplina = scanner.nextInt();
     scanner.nextLine();
@@ -375,11 +482,109 @@ public static void VerAlunosDisciplina(Scanner scanner) {
             System.out.println(aluno);
         }
     }
+    MenuProfessor(scanner);
     }
    
    
    
    
+   public static void addAlunoTurmaProfessor(Turma turma)
+   {
+    int cont=0;
+    for(Usuario u :Usuarios)
+    {
+        if(u instanceof Professor)
+        {
+            Professor professor = (Professor) u;
+            for(Disciplina d:professor.getDisciplina())
+            {
+              for(Turma t:d.getTurmas())
+              {
+                if(t.equals(turma))
+                {
+                    t.adicionarAluno(AlunoUtilizado);
+                }
+              }
+            }
+            Usuarios.set(cont,(Usuario) professor);
+        }
+        cont++;
+    }
+   }
+   
+   
+   
+   public static void MenuSecretaria(Scanner scanner) {
+        System.out.println("Bem-vindo, Secretaria!");
+        int op;
+        do {
+            System.out.println("1 - Gerar Currículo");
+            System.out.println("2 - Sair");
+            op = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (op) {
+                case 1:
+                    gerarCurriculo(scanner);
+                    break;
+                case 2:
+                    System.out.println("Saindo do programa.");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (op != 2);
+    }
+   public static void gerarCurriculo(Scanner scanner) {
+    for (Usuario usuario : Usuarios) {
+        if(usuario instanceof Professor)
+        {
+            Professor professor = (Professor) usuario;
+            System.out.println("Nome do Professor: " + professor.getNome());
+            System.out.println("Disciplinas:");
+    
+            for (Disciplina disciplina : professor.getDisciplina()) {
+                for (Turma turma : disciplina.getTurmas()) {
+                    int quantidadeAlunos = contador(turma); 
+                    System.out.println("ID da Disciplina: " + disciplina.getId() + 
+                                       ", Nome: " + disciplina.getNome() + 
+                                       ", Turma: " + turma.getId() + 
+                                       ", Alunos Matriculados: " + quantidadeAlunos);
+                }
+            }
+        }
+       
+        
+    }
+}
+    
+  public static boolean ChecaLimitedepessoas(Turma turma)
+  {
+   
+    if(contador(turma)<60)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+  }
+   
+   public static int contador(Turma turma) {
+    int cont = 0;
+    for (Usuario u : Usuarios) {
+        if (u instanceof Aluno) {
+            Aluno aluno = (Aluno) u;
+            for (Turma t : aluno.getMatricula().getTurmas()) {
+                if (turma.getId() == t.getId()) {
+                    cont++;
+                }
+            }
+        }
+    }
+    return cont;
+}
    
    
    
@@ -387,19 +592,31 @@ public static void VerAlunosDisciplina(Scanner scanner) {
    
    
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+
+
+public static void fecharProgramaAluno()
+{
+    int index =0;
+    for(Usuario u:Usuarios)
+    {
+      if(u instanceof Aluno)
+      {
+        if(AlunoUtilizado.getId()==u.getId())
+        {
+            Usuarios.set(index,(Usuario) AlunoUtilizado );
+        }
+      }
+      index++;
+    }
+    try {
+        Serializacao.salvarUsuarios(Usuarios, nomeArquivo);
+       
+
+    } catch (IOException e) {
+        System.out.println("Erro ao salvar Usuarios " + e.getMessage());
+    }
+    System.out.println("Saindo do programa.");
+    System.exit(0);
+}
+ 
 }

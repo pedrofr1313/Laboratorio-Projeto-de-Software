@@ -20,7 +20,6 @@ public class Secretaria extends Usuario implements Serializable {
 
         curso.setDisciplinas(disciplinasSelecionadas);
     }
-
     public void gerarCurriculo(){
 
     }

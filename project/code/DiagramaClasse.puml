@@ -1,11 +1,13 @@
 @startuml
 class  Curso{
+     Id: int
      Nome : String
      NumCreditos : int
      Disciplinas: List<Disciplina>
-    
+     getDisciplinasPorPeriodo(periodo: int): List<Disciplina>
 }
 class  Aluno{
+ Id: int
  Curso : Curso
  Periodo:int 
  Matricula:Matricula
@@ -47,8 +49,6 @@ class  Disciplina{
     id: int
     Turmas: List<Turma>
     Periodo: int
-
-    CargaHoraria : int
     
     verificarDisciplina():void
     exibirTurmas():void

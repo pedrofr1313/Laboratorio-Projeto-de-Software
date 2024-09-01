@@ -54,9 +54,10 @@ public class Disciplina implements Serializable{
     public void setTurmas(List<Turma> turmas) {
         Turmas = turmas;
     }
-    public Aluno[] getAlunos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAlunos'");
+    public void addTurma(Turma t)
+    {
+        Turmas.add(t);
     }
+
 
     }

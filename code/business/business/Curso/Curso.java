@@ -7,7 +7,7 @@ import business.Disciplina.Disciplina;
 
 
 public class Curso implements Serializable {
-
+    private int id;
     private String Nome;
     private int NumCreditos;
     private List<Disciplina> Disciplinas;
@@ -15,10 +15,11 @@ public class Curso implements Serializable {
     // {
         
     // }
-     public Curso(String nome, int numCreditos, List<Disciplina> disciplinas){
+     public Curso(String nome, int numCreditos, List<Disciplina> disciplinas, int id){
         this.Nome = nome;
         this.NumCreditos = numCreditos;
         this.Disciplinas = disciplinas;
+        this.id = id;
      }
 
     public List<Disciplina> getDisciplinas() {
@@ -34,6 +35,20 @@ public class Curso implements Serializable {
        .filter(disciplina -> disciplina.getPeriodo() == periodo)
        .toList();
     }
+   
+    public int getId() {
+        return id;
+    }
+
+	public String getNome() {
+		return Nome;
+	}
+
+	public int getNumCreditos() {
+		return NumCreditos;
+	}
+
+    
    
 
 }

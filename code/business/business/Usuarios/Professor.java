@@ -16,6 +16,10 @@ public class Professor extends Usuario implements Serializable{
         super(nome, id );
         this.Disciplina = new ArrayList<>();
     }
+    public void addDisciplina(Disciplina d)
+    {
+        Disciplina.add(d);
+    }
     public void visualizarAlunos(){
 
         

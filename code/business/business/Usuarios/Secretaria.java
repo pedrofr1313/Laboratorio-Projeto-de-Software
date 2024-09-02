@@ -10,22 +10,6 @@ public class Secretaria extends Usuario implements Serializable {
         super(nome, id);
     }
 
-
-    public void gerarCurriculo(Curso curso, int periodo, List<Integer> idsDisciplinas) {
-        List<Disciplina> disciplinasPorPeriodo = curso.getDisciplinasPorPeriodo(periodo);
-
-        List<Disciplina> disciplinasSelecionadas = disciplinasPorPeriodo.stream()
-            .filter(disciplina -> idsDisciplinas.contains(disciplina.getId()))
-            .toList();
-
-        curso.setDisciplinas(disciplinasSelecionadas);
-    }
-    public void gerarCurriculo(){
-
-    }
-    public void armazenarInformacoes(){
-
-    }
     public  Curso getCurso()
     {
         return null;

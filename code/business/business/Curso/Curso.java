@@ -11,10 +11,7 @@ public class Curso implements Serializable {
     private String Nome;
     private int NumCreditos;
     private List<Disciplina> Disciplinas;
-    // public Disciplina BuscarDisciplinas()
-    // {
-        
-    // }
+   
      public Curso(String nome, int numCreditos, List<Disciplina> disciplinas, int id){
         this.Nome = nome;
         this.NumCreditos = numCreditos;

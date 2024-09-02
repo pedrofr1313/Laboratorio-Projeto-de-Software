@@ -2,7 +2,6 @@
 package business;
 import business.Usuarios.Aluno;
 import business.Usuarios.Usuario;
-import business.Usuarios.UsuarioDAO;
 import business.Usuarios.Secretaria;
 import business.Usuarios.Serializacao;
 import business.Usuarios.Professor;
@@ -122,7 +121,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
 
 
    public static void CargaDeDadosUsuario() {
-        setNomeArquivo("Usuarios.dat");
+        setNomeArquivo("Arquivo.dat");
         File arquivo = new File(nomeArquivo);
 
         if (arquivo.exists()) {
@@ -162,7 +161,7 @@ public static void setUsuarios(List<Usuario> usuarios) {
             }
 
             List<Professor> professores = new ArrayList<>();
-            for (int i = 1; i <= 6; i++) {
+            for (int i = 1; i <= 9; i++) {
                 professores.add(new Professor("Professor" + i, 100 + i));
             }
 
@@ -187,29 +186,32 @@ public static void setUsuarios(List<Usuario> usuarios) {
             }
 
             List<Turma> turmas = new ArrayList<>();
-            int cont =1;
+            int cont=0;
             for(Curso curso:cursos)
             {
+                int cont2=0;
             for (Disciplina disciplina : curso.getDisciplinas()) {
                
-                for(Professor professor :professores)
-                {
-                    
-                    Turma turma = new Turma(cont, professor, disciplina.getPeriodo());
-                    Turma turma2= new Turma(cont+1,professor,disciplina.getPeriodo());
+                
+                    if(professores.get(cont2)!=null)
+                    {
+                   Turma turma = new Turma(cont,professores.get(cont2), disciplina.getPeriodo());
                     if(disciplina.getTurmas().isEmpty())
                     {
                         disciplina.addTurma(turma);
-                        disciplina.addTurma(turma2);
+                        
                     }
-                    professor.addDisciplina(disciplina);
+                    professores.get(cont2).addDisciplina(disciplina);
+                    cont++;
+                    cont2++;
+                    }
+                   
+                
+                
+                
+                
+                
 
-                }
-                
-                
-                
-                
-                cont=cont+2;
             }
         }
 
@@ -294,6 +296,7 @@ public static void ExibirMatricula(Scanner scanner)
             System.out.println("id inválido!");
         }
         matricula.getTurmas().remove(t);
+        notificarSistemaCobranca();
         MenuAluno(scanner);
        
     }
@@ -405,6 +408,7 @@ public static void ExibirMatricula(Scanner scanner)
 
      
      System.out.println("Matricula realizada com sucesso na turma de id " +TurmaEscolhida.getId());
+     notificarSistemaCobranca();
      }
      else
      {
@@ -617,6 +621,10 @@ public static void fecharProgramaAluno()
     }
     System.out.println("Saindo do programa.");
     System.exit(0);
+}
+
+public static void notificarSistemaCobranca() {
+    System.out.println("Sistema de cobranca notificado");
 }
  
 }

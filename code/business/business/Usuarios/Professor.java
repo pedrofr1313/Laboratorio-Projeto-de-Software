@@ -20,10 +20,6 @@ public class Professor extends Usuario implements Serializable{
     {
         Disciplina.add(d);
     }
-    public void visualizarAlunos(){
-
-        
-    }
     public List<Disciplina> getDisciplina() {
         return Disciplina;
     }

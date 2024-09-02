@@ -12,15 +12,8 @@ public class Turma implements Serializable{
     
     private List<Aluno> alunos;
     private Professor professor;
-    private boolean optativa;
-    
-
+    private boolean optativa;  
     private int periodo;
-    private static final int MINIMO_ALUNOS = 3;
-    private static final int MAXIMO_ALUNOS = 60;
-    private boolean status=true;
-    private boolean Optativa;
-    private int NumeroAlunos;
 
 
     public Turma(int id, Professor professor, int periodo) {

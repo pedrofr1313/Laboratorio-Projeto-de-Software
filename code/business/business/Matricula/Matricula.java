@@ -21,13 +21,7 @@ public class Matricula implements Serializable {
      turmas.add(turma);
     }
 
-    public void cancelarMatricula(Disciplina disciplina) {
-        
-    }
 
-    public void notificarSistemaCobranca() {
-
-    }
     public Matricula() {
         this.turmas = new ArrayList<>();
     }

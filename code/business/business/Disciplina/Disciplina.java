@@ -28,14 +28,6 @@ public class Disciplina implements Serializable{
         Nome = nome;
     }
 
-    public void verificarDisciplina()
-    {
-
-    }
-    public void ExibirTurmas()
-    {
-
-    }
     public int getId() {
         return id;
     }

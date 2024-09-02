@@ -1,46 +1,41 @@
 @startuml
 class  Curso{
-     Id: int
-     Nome : String
-     NumCreditos : int
-     Disciplinas: List<Disciplina>
-     getDisciplinasPorPeriodo(periodo: int): List<Disciplina>
+    id: int
+    Nome : String
+    NumCreditos : int
+    Disciplinas: List<Disciplina>
+    getDisciplinasPorPeriodo(periodo: int): List<Disciplina>
 }
 class  Aluno{
- Id: int
- Curso : Curso
- Periodo:int 
- Matricula:Matricula
- buscarDisciplinas()  
+    id: int
+    nome: String
+    Curso : Curso
+    Periodo:int 
+    Matricula:Matricula
 
 }
 class  Turma{
-    Id: int
-    MinimoAlunos : int = 3
-    MaximoAlunos : int = 60
-    Status: boolean = true
+    id: int
     Alunos: List<Aluno>
-    Optativa: boolean
-    NumeroAlunos: int
-    AddAluno():void
-    RemoverAluno():void
     Professor:Professor
+    adcionarAluno(Aluno aluno):void
+    removerAluno(Aluno aluno):void
     Período: int
-    VisualizarAlunos():void
 
 }
 class  Secretaria
-{
-    
-    gerarCurriculo(): void
-    ArmazenarInformacoes(): void
-    
+{  
+     nome: String
+     id: int
 }
 class  Professor
-{
+{  
+      id: int
+    nome: String
     Turmas: List<Disciplina>
     visualizarDisciplinas() : List<String>
     visualizarAlunosNaDisciplina(disciplinaId: int) : List<String>
+    addDisciplina(d: Disciplina): void
     
 
 }
@@ -49,17 +44,11 @@ class  Disciplina{
     id: int
     Turmas: List<Turma>
     Periodo: int
-    
-    verificarDisciplina():void
-    exibirTurmas():void
 }
 class Matricula{
     
     Turmas: List<Turma>
-    registrarAluno(Aluno alun):void
     addTurma(Turma turma):void
-    cancelarMatricula(Disciplina discilplina): void
-    notificarSistemaCobranca(): void
     PodeSeMatricular(Turma turma):boolean
     
 }

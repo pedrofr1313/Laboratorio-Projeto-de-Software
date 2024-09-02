@@ -31,9 +31,5 @@ public class Aluno extends Usuario implements Serializable {
         this.curso = curso;
         this.matricula=matricula;
     }
-    public void buscarDisciplina(){
-
-        
-    }
   
 }
